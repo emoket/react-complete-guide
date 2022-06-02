@@ -6,25 +6,29 @@ import './Expenses.css';
 
 const Expenses = (props) => {
   const [filteredYear, setFilteredYear] = useState('2020');
-  const saveDateDataHandler = (enteredDateData) => {
-    console.log('Expenses.js', enteredDateData);
-    setFilteredYear(enteredDateData);
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
   };
 
   return (
-    <Card className="expenses">
+    <Card className='expenses'>
       <ExpenseFilter
         selected={filteredYear}
-        onSaveDateData={saveDateDataHandler}
+        onChangeFilter={filterChangeHandler}
       />
-      {props.items.map((expense) => (
-        <ExpenseItem
-          key={expense.id}
-          title={expense.title}
-          amount={expense.amount}
-          date={expense.date}
-        />
-      ))}
+      {props.items
+        .filter(
+          (expense) => expense.date.getFullYear().toString() === filteredYear
+        )
+        .map((expense) => (
+          <ExpenseItem
+            key={expense.id}
+            title={expense.title}
+            amount={expense.amount}
+            date={expense.date}
+          />
+        ))}
     </Card>
   );
 };

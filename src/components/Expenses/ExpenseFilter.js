@@ -4,10 +4,7 @@ import './ExpenseFilter.css';
 
 const ExpenseFilter = (props) => {
   const dateChangeHandler = (event) => {
-    console.log('In ExpenseFilter.js', event.target.value)
-    props.onSaveDateData(event.target.value)
-
-    console.log("filtered year selected", props.selected)
+    props.onChangeFilter(event.target.value)
   }
 
   return (
