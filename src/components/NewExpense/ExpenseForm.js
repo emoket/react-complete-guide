@@ -50,15 +50,20 @@ const ExpenseForm = (props) => {
       date: new Date(enteredDate),
     };
 
-    // console.log(expenseData);
-
     // Child to Parent Call Here
     props.onSaveExpenseData(expenseData);
 
     setEnteredTitle('')
     setEnteredAmount('')
     setEnteredDate('')
+
+    props.onCancelAddExpense();
   };
+
+  const cancelHandler = (event) => {
+    event.preventDefault();
+    props.onCancelAddExpense();
+  }
 
   return (
     <form onSubmit={submitHandler}>
@@ -93,6 +98,7 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button onClick={cancelHandler}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>

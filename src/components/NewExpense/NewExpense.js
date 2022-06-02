@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ExpenseForm from './ExpenseForm';
 import './NewExpense.css';
 
@@ -8,16 +8,33 @@ const NewExpense = (props) => {
       ...enteredExpenseData,
       id: Math.random().toString(),
     };
-    console.log('in NewExpense.js');
-    console.log(expenseData);
 
     // Child to Parent Call Here
     props.onAddExpense(expenseData);
   };
 
+  const [isEditing, setIsEditing] = useState(false);
+
+  const startEditingHandler = () => {
+    setIsEditing(true);
+  };
+
+  const cancelAddExpenseHandler = () => {
+    setIsEditing(false);
+  };
+
   return (
-    <div className="new-expense">
-      <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
+    <div className='new-expense'>
+      {!isEditing && (
+        <button onClick={startEditingHandler}>Add New Expense</button>
+      )}
+
+      {isEditing && (
+        <ExpenseForm
+          onCancelAddExpense={cancelAddExpenseHandler}
+          onSaveExpenseData={saveExpenseDataHandler}
+        />
+      )}
     </div>
   );
 };
