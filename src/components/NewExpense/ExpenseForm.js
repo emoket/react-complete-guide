@@ -5,6 +5,7 @@ const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredAmount, setEnteredAmount] = useState('');
   const [enteredDate, setEnteredDate] = useState('');
+  const [isFormValid, setIsFormValid] = useState(true);
   // const [userInput, setUserInput] = useState({
   //   enteredTitle: '',
   //   enteredAmount: '',
@@ -44,6 +45,16 @@ const ExpenseForm = (props) => {
     // 브라우저의 기본 submit 동작을 막는다. (본 React 파일을 호스팅하고 있는 서버에 요청을 보냄)
     event.preventDefault();
 
+    // Form Validation Here
+    if (
+      enteredTitle.trim().length === 0 ||
+      enteredDate.trim().length === 0 ||
+      enteredAmount.trim().length === 0
+    ) {
+      setIsFormValid(false);
+      return;
+    }
+
     const expenseData = {
       title: enteredTitle,
       amount: +enteredAmount,
@@ -53,48 +64,51 @@ const ExpenseForm = (props) => {
     // Child to Parent Call Here
     props.onSaveExpenseData(expenseData);
 
-    setEnteredTitle('')
-    setEnteredAmount('')
-    setEnteredDate('')
+    setEnteredTitle('');
+    setEnteredAmount('');
+    setEnteredDate('');
 
     props.onCancelAddExpense();
   };
 
   return (
     <form onSubmit={submitHandler}>
-      <div className="new-expense__controls">
-        <div className="new-expense__control">
-          <label>Title</label>
+      <div className='new-expense__controls'>
+        <div className='new-expense__control'>
+          <label style={{ color: !isFormValid ? 'red' : 'black' }}>Title</label>
           <input
-            type="text"
+            style={{ borderColor: !isFormValid ? 'red' : '' }}
+            type='text'
             value={enteredTitle}
             onChange={titleChangeHandler}
           />
         </div>
-        <div className="new-expense__control">
+        <div className='new-expense__control'>
           <label>Amount</label>
           <input
-            type="number"
+            type='number'
             value={enteredAmount}
-            min="0.01"
-            step="0.01"
+            min='0.01'
+            step='0.01'
             onChange={amountChangeHandler}
           />
         </div>
-        <div className="new-expense__control">
+        <div className='new-expense__control'>
           <label>Date</label>
           <input
-            type="date"
+            type='date'
             value={enteredDate}
-            min="2019-01-01"
-            max="2022-12-31"
+            min='2019-01-01'
+            max='2022-12-31'
             onChange={dateChangeHandler}
           />
         </div>
       </div>
-      <div className="new-expense__actions">
-        <button type='button' onClick={props.onCancelAddExpense}>Cancel</button>
-        <button type="submit">Add Expense</button>
+      <div className='new-expense__actions'>
+        <button type='button' onClick={props.onCancelAddExpense}>
+          Cancel
+        </button>
+        <button type='submit'>Add Expense</button>
       </div>
     </form>
   );
