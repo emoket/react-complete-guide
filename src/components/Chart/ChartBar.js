@@ -1,11 +1,11 @@
 import './ChartBar.css';
 
-const ChartBar = (props) => {
-  console.log('ChartBar.js ->', props);
+const ChartBar = ({ maxValue, value, label }) => {
+  // console.log('ChartBar.js ->', props);
 
   let fillHeight = '0%';
-  if (props.maxValue > 0) {
-    fillHeight = Math.round((props.value / props.maxValue) * 100) + '%';
+  if (maxValue > 0) {
+    fillHeight = Math.round((value / maxValue) * 100) + '%';
   }
 
   return (
@@ -13,7 +13,7 @@ const ChartBar = (props) => {
       <div className='chart-bar__inner'>
         <div className='chart-bar__fill' style={{ height: fillHeight }}></div>
       </div>
-      <div className='chart-bar__label'>{props.label}</div>
+      <div className='chart-bar__label'>{label}</div>
     </div>
   );
 };
