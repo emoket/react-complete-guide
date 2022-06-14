@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ErrorModal from '../UI/ErrorModal';
 import './ExpenseForm.css';
 
 const ExpenseForm = (props) => {
@@ -52,6 +53,10 @@ const ExpenseForm = (props) => {
       enteredAmount.trim().length === 0
     ) {
       setIsFormValid(false);
+      setError({
+        title: 'Invalid input',
+        message: 'Required filed must be filled',
+      });
       return;
     }
 
@@ -71,46 +76,61 @@ const ExpenseForm = (props) => {
     props.onCancelAddExpense();
   };
 
+  const [error, setError] = useState();
+
+  const hideModalHandler = () => setError(undefined);
+
   return (
-    <form onSubmit={submitHandler}>
-      <div className='new-expense__controls'>
-        <div className='new-expense__control'>
-          <label style={{ color: !isFormValid ? 'red' : 'black' }}>Title</label>
-          <input
-            style={{ borderColor: !isFormValid ? 'red' : '' }}
-            type='text'
-            value={enteredTitle}
-            onChange={titleChangeHandler}
-          />
+    <div>
+      {error && (
+        <ErrorModal
+          title={error.title}
+          message={error.message}
+          onHideModal={hideModalHandler}
+        />
+      )}
+      <form onSubmit={submitHandler}>
+        <div className='new-expense__controls'>
+          <div className='new-expense__control'>
+            <label style={{ color: !isFormValid ? 'red' : 'black' }}>
+              Title
+            </label>
+            <input
+              style={{ borderColor: !isFormValid ? 'red' : '' }}
+              type='text'
+              value={enteredTitle}
+              onChange={titleChangeHandler}
+            />
+          </div>
+          <div className='new-expense__control'>
+            <label>Amount</label>
+            <input
+              type='number'
+              value={enteredAmount}
+              min='0.01'
+              step='0.01'
+              onChange={amountChangeHandler}
+            />
+          </div>
+          <div className='new-expense__control'>
+            <label>Date</label>
+            <input
+              type='date'
+              value={enteredDate}
+              min='2019-01-01'
+              max='2022-12-31'
+              onChange={dateChangeHandler}
+            />
+          </div>
         </div>
-        <div className='new-expense__control'>
-          <label>Amount</label>
-          <input
-            type='number'
-            value={enteredAmount}
-            min='0.01'
-            step='0.01'
-            onChange={amountChangeHandler}
-          />
+        <div className='new-expense__actions'>
+          <button type='button' onClick={props.onCancelAddExpense}>
+            Cancel
+          </button>
+          <button type='submit'>Add Expense</button>
         </div>
-        <div className='new-expense__control'>
-          <label>Date</label>
-          <input
-            type='date'
-            value={enteredDate}
-            min='2019-01-01'
-            max='2022-12-31'
-            onChange={dateChangeHandler}
-          />
-        </div>
-      </div>
-      <div className='new-expense__actions'>
-        <button type='button' onClick={props.onCancelAddExpense}>
-          Cancel
-        </button>
-        <button type='submit'>Add Expense</button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 export default ExpenseForm;
