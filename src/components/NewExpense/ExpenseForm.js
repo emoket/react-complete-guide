@@ -81,7 +81,7 @@ const ExpenseForm = (props) => {
   const hideModalHandler = () => setError(undefined);
 
   return (
-    <div>
+    <React.Fragment>
       {error && (
         <ErrorModal
           title={error.title}
@@ -130,7 +130,7 @@ const ExpenseForm = (props) => {
           <button type='submit'>Add Expense</button>
         </div>
       </form>
-    </div>
+    </React.Fragment>
   );
 };
 export default ExpenseForm;
