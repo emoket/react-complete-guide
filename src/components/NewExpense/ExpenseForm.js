@@ -5,7 +5,7 @@ import './ExpenseForm.css';
 const ExpenseForm = (props) => {
   // const [enteredTitle, setEnteredTitle] = useState('');
   // using useRef Hook instead of useState
-  const userEnteredTitle = useRef();
+  const titleInputRef = useRef();
 
   const [enteredAmount, setEnteredAmount] = useState('');
   const [enteredDate, setEnteredDate] = useState('');
@@ -53,7 +53,7 @@ const ExpenseForm = (props) => {
     // Form Validation Here
     if (
       // enteredTitle.trim().length === 0 ||
-      userEnteredTitle.current.value.trim().length === 0 ||
+      titleInputRef.current.value.trim().length === 0 ||
       enteredDate.trim().length === 0 ||
       enteredAmount.trim().length === 0
     ) {
@@ -67,7 +67,7 @@ const ExpenseForm = (props) => {
 
     const expenseData = {
       // title: enteredTitle,
-      title: userEnteredTitle.current.value,
+      title: titleInputRef.current.value,
       amount: +enteredAmount,
       date: new Date(enteredDate),
     };
@@ -76,7 +76,7 @@ const ExpenseForm = (props) => {
     props.onSaveExpenseData(expenseData);
 
     // setEnteredTitle('');
-    userEnteredTitle.current.value = '';
+    titleInputRef.current.value = '';
     setEnteredAmount('');
     setEnteredDate('');
 
@@ -107,7 +107,7 @@ const ExpenseForm = (props) => {
               type='text'
               // value={enteredTitle}
               // onChange={titleChangeHandler}
-              ref={userEnteredTitle}
+              ref={titleInputRef}
             />
           </div>
           <div className='new-expense__control'>
