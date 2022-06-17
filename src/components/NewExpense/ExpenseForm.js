@@ -1,32 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ErrorModal from '../UI/ErrorModal';
 import './ExpenseForm.css';
 
 const ExpenseForm = (props) => {
-  const [enteredTitle, setEnteredTitle] = useState('');
+  // const [enteredTitle, setEnteredTitle] = useState('');
+  // using useRef Hook instead of useState
+  const userEnteredTitle = useRef();
+
   const [enteredAmount, setEnteredAmount] = useState('');
   const [enteredDate, setEnteredDate] = useState('');
   const [isFormValid, setIsFormValid] = useState(true);
+
   // const [userInput, setUserInput] = useState({
   //   enteredTitle: '',
   //   enteredAmount: '',
   //   enteredDate: '',
   // });
 
-  const titleChangeHandler = (event) => {
-    setEnteredTitle(event.target.value);
-    // setUserInput({
-    //   ...userInput,
-    //   enteredTitle: event.target.value,
-    // });
-    // === Better Solution ===
-    // setUserInput((prevState) => {
-    //   return {
-    //     ...prevState,
-    //     enteredTitle: event.target.value,
-    //   };
-    // });
-  };
+  // const titleChangeHandler = (event) => {
+  //   setEnteredTitle(event.target.value);
+  // setUserInput({
+  //   ...userInput,
+  //   enteredTitle: event.target.value,
+  // });
+  // === Better Solution ===
+  // setUserInput((prevState) => {
+  //   return {
+  //     ...prevState,
+  //     enteredTitle: event.target.value,
+  //   };
+  // });
+  // };
   const amountChangeHandler = (event) => {
     setEnteredAmount(event.target.value);
     // setUserInput({
@@ -48,7 +52,8 @@ const ExpenseForm = (props) => {
 
     // Form Validation Here
     if (
-      enteredTitle.trim().length === 0 ||
+      // enteredTitle.trim().length === 0 ||
+      userEnteredTitle.current.value.trim().length === 0 ||
       enteredDate.trim().length === 0 ||
       enteredAmount.trim().length === 0
     ) {
@@ -61,7 +66,8 @@ const ExpenseForm = (props) => {
     }
 
     const expenseData = {
-      title: enteredTitle,
+      // title: enteredTitle,
+      title: userEnteredTitle.current.value,
       amount: +enteredAmount,
       date: new Date(enteredDate),
     };
@@ -69,7 +75,8 @@ const ExpenseForm = (props) => {
     // Child to Parent Call Here
     props.onSaveExpenseData(expenseData);
 
-    setEnteredTitle('');
+    // setEnteredTitle('');
+    userEnteredTitle.current.value = '';
     setEnteredAmount('');
     setEnteredDate('');
 
@@ -98,8 +105,9 @@ const ExpenseForm = (props) => {
             <input
               style={{ borderColor: !isFormValid ? 'red' : '' }}
               type='text'
-              value={enteredTitle}
-              onChange={titleChangeHandler}
+              // value={enteredTitle}
+              // onChange={titleChangeHandler}
+              ref={userEnteredTitle}
             />
           </div>
           <div className='new-expense__control'>
